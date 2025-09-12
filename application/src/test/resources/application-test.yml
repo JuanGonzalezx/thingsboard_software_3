@@ -1,0 +1,77 @@
+# Configuración de pruebas para ThingsBoard
+spring:
+  profiles:
+    active: test
+  
+  # Base de datos H2 en memoria para pruebas
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+    
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: false
+        
+  # Configuración de cache para pruebas
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=300s
+
+# Configuración específica para notificaciones de Telegram
+notification:
+  telegram:
+    api-url: https://api.telegram.org/bot
+    timeout: 5000
+    max-retries: 3
+    rate-limit:
+      enabled: false
+      requests-per-minute: 30
+      
+# Configuración de logging para pruebas
+logging:
+  level:
+    org.thingsboard: DEBUG
+    org.springframework.web.client: DEBUG
+    com.zaxxer.hikari: WARN
+    org.hibernate: WARN
+    org.springframework: WARN
+    root: WARN
+    
+# Configuración del pool de conexiones para pruebas
+hikari:
+  maximumPoolSize: 5
+  minimumIdle: 1
+  connectionTimeout: 30000
+  
+# Configuración de seguridad para pruebas
+security:
+  jwt:
+    tokenExpirationTime: 900 # 15 minutos
+    refreshTokenExpTime: 3600 # 1 hora
+    
+# Configuración de colas para pruebas (usar memoria)
+queue:
+  type: in-memory
+  
+# Desactivar métricas en pruebas
+management:
+  endpoints:
+    enabled-by-default: false
+  metrics:
+    enabled: false
+    
+# Configuración específica para pruebas de Telegram
+test:
+  telegram:
+    mock-api: true
+    default-bot-token: "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    default-chat-id: "123456789"
+    timeout: 1000 # Timeout reducido para pruebas

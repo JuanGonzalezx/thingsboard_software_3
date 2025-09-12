@@ -13,23 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.thingsboard.server.common.data.notification;
+package org.thingsboard.server.common.data.notification.targets.telegram;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-public enum NotificationDeliveryMethod {
-
-    WEB("web"),
-    EMAIL("email"),
-    SMS("SMS"),
-    SLACK("Slack"),
-    MICROSOFT_TEAMS("Microsoft Teams"),
-    MOBILE_APP("mobile app"),
-    TELEGRAM("Telegram");
-
-    @Getter
-    private final String name;
-
+public enum TelegramChatType {
+    PRIVATE,
+    GROUP,
+    SUPERGROUP,
+    CHANNEL
 }

@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.thingsboard.server.common.data.notification;
+package org.thingsboard.server.common.data.notification.settings;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
+import org.thingsboard.server.common.data.notification.NotificationDeliveryMethod;
 
-@RequiredArgsConstructor
-public enum NotificationDeliveryMethod {
+@Data
+public class TelegramNotificationDeliveryMethodConfig implements NotificationDeliveryMethodConfig {
 
-    WEB("web"),
-    EMAIL("email"),
-    SMS("SMS"),
-    SLACK("Slack"),
-    MICROSOFT_TEAMS("Microsoft Teams"),
-    MOBILE_APP("mobile app"),
-    TELEGRAM("Telegram");
+    @NotEmpty
+    private String botToken;
 
-    @Getter
-    private final String name;
+    @Override
+    public NotificationDeliveryMethod getMethod() {
+        return NotificationDeliveryMethod.TELEGRAM;
+    }
 
 }

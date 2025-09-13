@@ -288,4 +288,37 @@
       </ng-template>
     </mat-expansion-panel>
   </section>
+  <section class="tb-form-panel tb-slide-toggle stroked"
+           [formGroupName]="NotificationDeliveryMethod.TELEGRAM"
+           *ngIf="templateConfigurationForm.get('TELEGRAM.enabled').value">
+    <mat-expansion-panel class="tb-settings" expanded="{{ expandedForm(NotificationDeliveryMethod.TELEGRAM) }}">
+      <mat-expansion-panel-header class="fill-width flex flex-row flex-wrap">
+        <mat-panel-title class="template-tittle">
+          <tb-icon>{{ NotificationDeliveryMethodInfoMap.get(NotificationDeliveryMethod.TELEGRAM).icon }}</tb-icon>
+          {{ NotificationDeliveryMethodInfoMap.get(NotificationDeliveryMethod.TELEGRAM).name | translate }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent class="tb-extension-panel">
+        <mat-form-field class="mat-block">
+          <mat-label translate>notification.telegram.chat-id</mat-label>
+          <input matInput formControlName="chatId">
+          <mat-error *ngIf="templateConfigurationForm.get('TELEGRAM.chatId').hasError('required')">
+            {{ 'notification.telegram.chat-id-required' | translate }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="mat-block">
+          <mat-label translate>notification.message</mat-label>
+          <textarea matInput
+                    cdkTextareaAutosize
+                    cols="1"
+                    cdkAutosizeMinRows="1"
+                    formControlName="body">
+          </textarea>
+          <mat-error *ngIf="templateConfigurationForm.get('TELEGRAM.body').hasError('required')">
+            {{ 'notification.message-required' | translate }}
+          </mat-error>
+        </mat-form-field>
+      </ng-template>
+    </mat-expansion-panel>
+  </section>
 </section>

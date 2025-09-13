@@ -543,6 +543,9 @@
         "slack-api-token": "Slack API token",
         "slack": "Slack",
         "slack-settings": "Slack settings",
+        "telegram": "Telegram",
+        "telegram-settings": "Telegram settings",
+        "telegram-bot-token": "Telegram bot token",
         "mobile-settings": "Mobile settings",
         "firebase-service-account-file": "Firebase service account credentials JSON file",
         "select-firebase-service-account-file": "Drag and drop your Firebase service account credentials file or ",
@@ -4013,7 +4016,9 @@
             "web": "Web",
             "web-preview": "Web notification preview",
             "mobile-app": "Mobile app",
-            "mobile-app-preview": "Mobile app notification preview"
+            "mobile-app-preview": "Mobile app notification preview",
+            "telegram": "Telegram",
+            "telegram-preview": "Telegram notification preview"
         },
         "delivery-method-not-configure-click": "Delivery method is not configured. Click to setup.",
         "delivery-method-not-configure-contact": "Delivery method is not configured. Contact your system administrator.",
@@ -4158,6 +4163,10 @@
             "direct": "Direct message",
             "private-channel": "Private channel",
             "public-channel": "Public channel"
+        },
+        "telegram": {
+            "chat-id": "Chat ID",
+            "chat-id-required": "Chat ID is required"
         },
         "start-from-scratch": "Start from scratch",
         "status": "Status",

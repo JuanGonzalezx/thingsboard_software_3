@@ -53,7 +53,7 @@ import org.thingsboard.server.dao.sql.query.EntityQueryRepository;
 import org.thingsboard.server.dao.timeseries.TimeseriesService;
 import org.thingsboard.server.gen.transport.TransportProtos;
 import org.thingsboard.server.queue.discovery.PartitionService;
-import org.thingsboard.server.queue.usagestats.DefaultTbApiUsageReportClient;
+import org.thingsboard.server.common.stats.TbApiUsageReportClient;
 import org.thingsboard.server.service.telemetry.TelemetrySubscriptionService;
 
 import java.time.Duration;
@@ -119,7 +119,7 @@ class DefaultDeviceStateServiceTest {
     @Mock
     NotificationRuleProcessor notificationRuleProcessor;
     @Mock
-    DefaultTbApiUsageReportClient defaultTbApiUsageReportClient;
+    TbApiUsageReportClient defaultTbApiUsageReportClient;
 
     long defaultInactivityTimeoutMs = Duration.ofMinutes(10L).toMillis();
 

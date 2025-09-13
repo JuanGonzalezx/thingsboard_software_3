@@ -356,6 +356,7 @@ export class SentNotificationDialogComponent extends
       case NotificationDeliveryMethod.SMS:
       case NotificationDeliveryMethod.SLACK:
       case NotificationDeliveryMethod.MOBILE_APP:
+      case NotificationDeliveryMethod.TELEGRAM:
         return '/settings/notifications';
     }
   }

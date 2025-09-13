@@ -45,7 +45,8 @@ export class NotificationSettingsComponent extends PageComponent implements OnIn
 
   private deliveryMethods = new Set([
     NotificationDeliveryMethod.SLACK,
-    NotificationDeliveryMethod.MICROSOFT_TEAMS
+    NotificationDeliveryMethod.MICROSOFT_TEAMS,
+    NotificationDeliveryMethod.TELEGRAM
   ]);
 
   constructor(protected store: Store<AppState>,

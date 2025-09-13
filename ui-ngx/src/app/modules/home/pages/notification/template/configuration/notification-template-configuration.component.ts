@@ -299,6 +299,12 @@ export class NotificationTemplateConfigurationComponent implements OnDestroy, Co
           button: [null]
         });
         break;
+      case NotificationDeliveryMethod.TELEGRAM:
+        deliveryMethodForm = this.fb.group({
+          chatId: ['', Validators.required],
+          body: ['', Validators.required]
+        });
+        break;
       default:
         throw new Error(`Not configured templated for notification delivery method: ${deliveryMethod}`);
     }

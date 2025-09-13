@@ -151,7 +151,9 @@ public class DefaultNotificationCenter extends AbstractSubscriptionService imple
                 }
             }
             if (ruleId == null && !notificationType.isSystem()) {
-                if (targets.stream().noneMatch(target -> target.getConfiguration().getType().getSupportedDeliveryMethods().contains(deliveryMethod))) {
+                // Telegram uses CHAT_ID from template, not traditional targets/recipients
+                if (deliveryMethod != NotificationDeliveryMethod.TELEGRAM && 
+                    targets.stream().noneMatch(target -> target.getConfiguration().getType().getSupportedDeliveryMethods().contains(deliveryMethod))) {
                     throw new IllegalArgumentException("Recipients for " + deliveryMethod.getName() + " delivery method not chosen");
                 }
             }

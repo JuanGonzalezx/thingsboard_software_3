@@ -41,3 +41,15 @@ Collect and Visualize your IoT data in minutes by following this [guide](https:/
 ## Licenses
 
 This project is released under [Apache 2.0 License](./LICENSE).
+
+
+## Ejecutar el proyecto
+
+1. Compilar el proyecto
+``` bash
+./build.bash
+```
+2. Ejecutar el proyecto
+``` bash
+java -jar application/target/thingsboard-4.3.0-SNAPSHOT-boot.jar
+```

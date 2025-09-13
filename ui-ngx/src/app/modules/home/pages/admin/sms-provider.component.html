@@ -62,6 +62,20 @@
         <input matInput formControlName="botToken"/>
       </mat-form-field>
     </mat-card-content>
+    <mat-card-header>
+      <mat-card-title>
+        <span class="mat-headline-5" translate>admin.telegram-settings</span>
+      </mat-card-title>
+      <span class="flex-1"></span>
+      <div tb-help="telegramSettings"></div>
+    </mat-card-header>
+    <div style="height: 4px;" *ngIf="!(isLoading$ | async)"></div>
+    <mat-card-content formGroupName="TELEGRAM">
+      <mat-form-field class="mat-block" subscriptSizing="dynamic">
+        <mat-label translate>admin.telegram-bot-token</mat-label>
+        <input matInput formControlName="botToken"/>
+      </mat-form-field>
+    </mat-card-content>
     <mat-card-header *ngIf="isSysAdmin()">
       <mat-card-title>
         <span class="mat-headline-5" translate>admin.mobile-settings</span>

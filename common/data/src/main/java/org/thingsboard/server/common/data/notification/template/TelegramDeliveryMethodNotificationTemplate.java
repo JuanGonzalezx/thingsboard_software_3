@@ -15,14 +15,16 @@
  */
 package org.thingsboard.server.common.data.notification.template;
 
+import java.util.List;
+
+import org.thingsboard.server.common.data.notification.NotificationDeliveryMethod;
+import org.thingsboard.server.common.data.validation.NoXss;
+
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.thingsboard.server.common.data.notification.NotificationDeliveryMethod;
-import org.thingsboard.server.common.data.validation.NoXss;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -30,12 +32,20 @@ import java.util.List;
 @ToString(callSuper = true)
 public class TelegramDeliveryMethodNotificationTemplate extends DeliveryMethodNotificationTemplate {
 
+    @NoXss(fieldName = "Telegram chat ID")
+    @NotEmpty
+    private String chatId;
+
     private final List<TemplatableValue> templatableValues = List.of(
-            TemplatableValue.of(this::getBody, this::setBody)
+            TemplatableValue.of(this::getBody, this::setBody),
+            TemplatableValue.of(this::getChatId, this::setChatId)
     );
 
     public TelegramDeliveryMethodNotificationTemplate(DeliveryMethodNotificationTemplate other) {
         super(other);
+        if (other instanceof TelegramDeliveryMethodNotificationTemplate telegramTemplate) {
+            this.chatId = telegramTemplate.chatId;
+        }
     }
 
     @NoXss(fieldName = "Telegram message")

@@ -124,6 +124,7 @@ import org.thingsboard.server.common.data.notification.template.MobileAppDeliver
 import org.thingsboard.server.common.data.notification.template.NotificationTemplate;
 import org.thingsboard.server.common.data.notification.template.NotificationTemplateConfig;
 import org.thingsboard.server.common.data.notification.template.SmsDeliveryMethodNotificationTemplate;
+import org.thingsboard.server.common.data.notification.template.TelegramDeliveryMethodNotificationTemplate;
 import org.thingsboard.server.common.data.notification.template.WebDeliveryMethodNotificationTemplate;
 import org.thingsboard.server.common.data.oauth2.MapperType;
 import org.thingsboard.server.common.data.oauth2.OAuth2Client;
@@ -1237,6 +1238,12 @@ public abstract class AbstractWebTest extends AbstractInMemoryStorageTest {
                 case MOBILE_APP:
                     deliveryMethodNotificationTemplate = new MobileAppDeliveryMethodNotificationTemplate();
                     break;
+                case TELEGRAM: {
+                    TelegramDeliveryMethodNotificationTemplate telegramTemplate = new TelegramDeliveryMethodNotificationTemplate();
+                    telegramTemplate.setChatId("@test_channel");
+                    deliveryMethodNotificationTemplate = telegramTemplate;
+                    break;
+                }
                 default:
                     throw new IllegalArgumentException("Unsupported delivery method " + deliveryMethod);
             }

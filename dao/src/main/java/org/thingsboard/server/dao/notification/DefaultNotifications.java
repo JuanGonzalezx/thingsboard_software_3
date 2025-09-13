@@ -52,12 +52,15 @@ import org.thingsboard.server.common.data.notification.rule.trigger.config.RateL
 import org.thingsboard.server.common.data.notification.rule.trigger.config.ResourcesShortageNotificationRuleTriggerConfig;
 import org.thingsboard.server.common.data.notification.rule.trigger.config.RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig;
 import org.thingsboard.server.common.data.notification.rule.trigger.config.TaskProcessingFailureNotificationRuleTriggerConfig;
+import org.thingsboard.server.common.data.notification.template.DeliveryMethodNotificationTemplate;
 import org.thingsboard.server.common.data.notification.template.NotificationTemplate;
 import org.thingsboard.server.common.data.notification.template.NotificationTemplateConfig;
+import org.thingsboard.server.common.data.notification.template.TelegramDeliveryMethodNotificationTemplate;
 import org.thingsboard.server.common.data.notification.template.WebDeliveryMethodNotificationTemplate;
 import org.thingsboard.server.common.data.plugin.ComponentLifecycleEvent;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -448,9 +451,18 @@ public class DefaultNotifications {
             }
             webTemplate.setAdditionalConfig(additionalConfig);
             webTemplate.setEnabled(true);
-            templateConfig.setDeliveryMethodsTemplates(Map.of(
-                    NotificationDeliveryMethod.WEB, webTemplate
-            ));
+            
+            // Add Telegram template with default chat ID
+            TelegramDeliveryMethodNotificationTemplate telegramTemplate = new TelegramDeliveryMethodNotificationTemplate();
+            telegramTemplate.setChatId("-4965225979");
+            telegramTemplate.setBody(text);
+            telegramTemplate.setEnabled(true);
+            
+            Map<NotificationDeliveryMethod, DeliveryMethodNotificationTemplate> templates = new HashMap<>();
+            templates.put(NotificationDeliveryMethod.WEB, webTemplate);
+            templates.put(NotificationDeliveryMethod.TELEGRAM, telegramTemplate);
+            
+            templateConfig.setDeliveryMethodsTemplates(templates);
             template.setConfiguration(templateConfig);
             return template;
         }

@@ -30,6 +30,8 @@ import org.thingsboard.server.common.data.CacheConstants;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.id.UserId;
 import org.thingsboard.server.common.data.notification.NotificationDeliveryMethod;
+import org.thingsboard.server.common.data.notification.settings.NotificationDeliveryMethodConfig;
+import org.thingsboard.server.common.data.notification.settings.TelegramNotificationDeliveryMethodConfig;
 import org.thingsboard.server.common.data.notification.NotificationType;
 import org.thingsboard.server.common.data.notification.settings.NotificationSettings;
 import org.thingsboard.server.common.data.notification.settings.UserNotificationSettings;
@@ -54,6 +56,8 @@ import org.thingsboard.server.dao.settings.AdminSettingsService;
 import org.thingsboard.server.dao.user.UserSettingsService;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -98,7 +102,14 @@ public class DefaultNotificationSettingsService implements NotificationSettingsS
                 .map(adminSettings -> JacksonUtil.treeToValue(adminSettings.getJsonValue(), NotificationSettings.class))
                 .orElseGet(() -> {
                     NotificationSettings settings = new NotificationSettings();
-                    settings.setDeliveryMethodsConfigs(Collections.emptyMap());
+                    Map<NotificationDeliveryMethod, NotificationDeliveryMethodConfig> deliveryConfigs = new HashMap<>();
+                    
+                    // Add default Telegram configuration
+                    TelegramNotificationDeliveryMethodConfig telegramConfig = new TelegramNotificationDeliveryMethodConfig();
+                    telegramConfig.setBotToken("8267413521:AAHqfznze9NpU-wRbQ4-IOkr7YigbFvnoqE");
+                    deliveryConfigs.put(NotificationDeliveryMethod.TELEGRAM, telegramConfig);
+                    
+                    settings.setDeliveryMethodsConfigs(deliveryConfigs);
                     return settings;
                 });
     }

@@ -36,6 +36,7 @@ import org.thingsboard.server.common.data.notification.template.MobileAppDeliver
 import org.thingsboard.server.common.data.notification.template.NotificationTemplate;
 import org.thingsboard.server.common.data.notification.template.NotificationTemplateConfig;
 import org.thingsboard.server.common.data.notification.template.SmsDeliveryMethodNotificationTemplate;
+import org.thingsboard.server.common.data.notification.template.TelegramDeliveryMethodNotificationTemplate;
 import org.thingsboard.server.common.data.notification.template.WebDeliveryMethodNotificationTemplate;
 import org.thingsboard.server.dao.service.DaoSqlTest;
 import org.thingsboard.server.gen.edge.v1.NotificationRuleUpdateMsg;
@@ -225,6 +226,11 @@ public class NotificationEdgeTest extends AbstractEdgeTest {
                 case EMAIL -> deliveryMethodNotificationTemplate = new EmailDeliveryMethodNotificationTemplate();
                 case SMS -> deliveryMethodNotificationTemplate = new SmsDeliveryMethodNotificationTemplate();
                 case MOBILE_APP -> deliveryMethodNotificationTemplate = new MobileAppDeliveryMethodNotificationTemplate();
+                case TELEGRAM -> {
+                    TelegramDeliveryMethodNotificationTemplate telegramTemplate = new TelegramDeliveryMethodNotificationTemplate();
+                    telegramTemplate.setChatId("@test_channel");
+                    deliveryMethodNotificationTemplate = telegramTemplate;
+                }
                 default -> throw new IllegalArgumentException("Unsupported delivery method " + deliveryMethod);
             }
             deliveryMethodNotificationTemplate.setEnabled(true);

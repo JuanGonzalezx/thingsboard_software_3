@@ -93,7 +93,8 @@ export interface NotificationSettings {
 }
 
 export interface NotificationDeliveryMethodConfig extends Partial<SlackNotificationDeliveryMethodConfig &
-  MobileNotificationDeliveryMethodConfig>{
+  MobileNotificationDeliveryMethodConfig &
+  TelegramNotificationDeliveryMethodConfig>{
   enabled: boolean;
   method: NotificationDeliveryMethod;
 }
@@ -105,6 +106,10 @@ interface SlackNotificationDeliveryMethodConfig {
 interface MobileNotificationDeliveryMethodConfig {
   firebaseServiceAccountCredentials: string;
   firebaseServiceAccountCredentialsFileName: string;
+}
+
+interface TelegramNotificationDeliveryMethodConfig {
+  botToken: string;
 }
 
 export interface SlackConversation {
@@ -330,7 +335,8 @@ export interface DeliveryMethodNotificationTemplate extends
     & EmailDeliveryMethodNotificationTemplate
     & SlackDeliveryMethodNotificationTemplate
     & MicrosoftTeamsDeliveryMethodNotificationTemplate
-    & MobileDeliveryMethodNotificationTemplate>{
+    & MobileDeliveryMethodNotificationTemplate
+    & TelegramDeliveryMethodNotificationTemplate>{
   body: string;
   enabled: boolean;
   method: NotificationDeliveryMethod;
@@ -379,6 +385,10 @@ interface MobileDeliveryMethodNotificationTemplate {
   subject: string;
 }
 
+interface TelegramDeliveryMethodNotificationTemplate {
+  chatId: string;
+}
+
 export enum NotificationStatus {
   SENT = 'SENT',
   READ = 'READ'
@@ -390,7 +400,8 @@ export enum NotificationDeliveryMethod {
   SMS = 'SMS',
   EMAIL = 'EMAIL',
   SLACK = 'SLACK',
-  MICROSOFT_TEAMS = 'MICROSOFT_TEAMS'
+  MICROSOFT_TEAMS = 'MICROSOFT_TEAMS',
+  TELEGRAM = 'TELEGRAM'
 }
 
 export interface NotificationDeliveryMethodInfo {
@@ -431,6 +442,11 @@ export const NotificationDeliveryMethodInfoMap = new Map<NotificationDeliveryMet
     {
       name: 'notification.delivery-method.microsoft-teams',
       icon: 'mdi:microsoft-teams'
+    }],
+  [NotificationDeliveryMethod.TELEGRAM,
+    {
+      name: 'notification.delivery-method.telegram',
+      icon: 'mdi:telegram'
     }]
 ]);
 

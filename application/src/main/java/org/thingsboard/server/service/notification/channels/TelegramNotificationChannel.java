@@ -20,32 +20,54 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.thingsboard.rule.engine.api.notification.TelegramService;
 import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.notification.NotificationDeliveryMethod;
+import org.thingsboard.server.common.data.notification.settings.NotificationSettings;
+import org.thingsboard.server.common.data.notification.settings.TelegramNotificationDeliveryMethodConfig;
+import org.thingsboard.server.common.data.notification.targets.NotificationRecipient;
 import org.thingsboard.server.common.data.notification.targets.telegram.TelegramChat;
+import org.thingsboard.server.common.data.notification.template.TelegramDeliveryMethodNotificationTemplate;
+import org.thingsboard.server.dao.notification.NotificationSettingsService;
+import org.thingsboard.server.service.notification.NotificationProcessingContext;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TelegramNotificationChannel {
+public class TelegramNotificationChannel implements NotificationChannel<NotificationRecipient, TelegramDeliveryMethodNotificationTemplate> {
 
     private final TelegramService telegramService;
+    private final NotificationSettingsService notificationSettingsService;
 
-    public void sendNotification(TenantId tenantId, TelegramChat chat, String message, String botToken) {
-        try {
-            telegramService.sendMessage(tenantId, botToken, chat.getChatId(), message);
-            log.debug("Telegram notification sent successfully to chat: {}", chat.getChatId());
-        } catch (Exception e) {
-            log.error("Failed to send Telegram notification to tenant: {}, chat: {}", tenantId, chat.getChatId(), e);
-            throw new RuntimeException("Failed to send Telegram notification", e);
+    @Override
+    public void sendNotification(NotificationRecipient recipient, TelegramDeliveryMethodNotificationTemplate processedTemplate, NotificationProcessingContext ctx) throws Exception {
+        TelegramNotificationDeliveryMethodConfig config = ctx.getDeliveryMethodConfig(NotificationDeliveryMethod.TELEGRAM);
+        
+        // Para Telegram, el CHAT_ID viene del template, no del recipient
+        String chatId;
+        if (recipient instanceof TelegramChat) {
+            chatId = ((TelegramChat) recipient).getChatId();
+        } else {
+            // Usar el CHAT_ID del template (configurado por defecto)
+            chatId = processedTemplate.getChatId();
+        }
+        
+        if (chatId == null || chatId.isEmpty()) {
+            throw new RuntimeException("Telegram CHAT_ID not configured");
+        }
+        
+        telegramService.sendMessage(ctx.getTenantId(), config.getBotToken(), chatId, processedTemplate.getBody());
+        log.debug("Telegram notification sent successfully to chat: {}", chatId);
+    }
+
+    @Override
+    public void check(TenantId tenantId) throws Exception {
+        NotificationSettings notificationSettings = notificationSettingsService.findNotificationSettings(tenantId);
+        if (!notificationSettings.getDeliveryMethodsConfigs().containsKey(NotificationDeliveryMethod.TELEGRAM)) {
+            throw new RuntimeException("Telegram bot token is not configured");
         }
     }
 
-    public void sendNotificationWithParseMode(TenantId tenantId, TelegramChat chat, String message, String botToken, boolean parseMode) {
-        try {
-            telegramService.sendMessage(tenantId, botToken, chat.getChatId(), message, parseMode);
-            log.debug("Telegram notification with parse mode sent successfully to chat: {}", chat.getChatId());
-        } catch (Exception e) {
-            log.error("Failed to send Telegram notification with parse mode to tenant: {}, chat: {}", tenantId, chat.getChatId(), e);
-            throw new RuntimeException("Failed to send Telegram notification", e);
-        }
+    @Override
+    public NotificationDeliveryMethod getDeliveryMethod() {
+        return NotificationDeliveryMethod.TELEGRAM;
     }
 }
